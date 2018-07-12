@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script>
+		function checkWin(id)
+		{
+			var table = document.getElementById("mytable");
+			var count = table.rows.length;
+			var rows = table.rows;
+			
+			for(var i = 0; i < 3; i++)
+			{
+				var column = row[i].cols;
+			}
+		}
+		var flag = 0;
+		var counter = 0;
+		arr = []
+		arr2 = [-1,-1,-1,-1,-1,-1,-1,-1,-1]
+		function checkWin()
+		{	//row
+			 if((arr2[0] != -1 && arr2[0] == arr2[1] && arr2[0]== arr2[2]) || (arr2[3] != -1 && arr2[3] == arr2[4] && arr2[3]== arr2[5]) || (arr2[6] != -1 &&  arr2[6] == arr2[7] && arr2[6]== arr2[8]))
+                return true;
+            //col
+            if((arr2[0] != -1 && arr2[0] == arr2[3] && arr2[0]== arr2[6]) || (arr2[1] != -1 && arr2[1] == arr2[4] && arr2[1] == arr2[7]) || (arr2[2] != -1 && arr2[2] == arr2[5] && arr2[2] == arr2[8]))
+                return true;
+            //diagonal
+            if((arr2[0] != -1 && arr2[0] == arr2[4] && arr2[0]== arr2[8]) || (arr2[2] != -1 && arr2[2] == arr2[4] && arr2[2]== arr2[6]))
+                return true;
+            return false;
+		}
+		function undo_data()
+		{
+			var c = arr.pop()
+			document.getElementById(c).textContent = "";
+			flag = 1 - flag;
+			counter--;
+			arr2[id - 1] = -1;
+		}
+		function put_data(id){
+			var st = document.getElementById(id).textContent;			
+			if(st == 'X')
+				return;
+			if(st == 'O')
+				return;
+
+			if(flag == 0)
+				{
+					document.getElementById(id).textContent = "X";
+					flag = 1;
+					counter = counter + 1;
+					arr2[id - 1] = "X";
+					arr.push(id);
+				}
+			else
+			{
+				document.getElementById(id).textContent = "O";
+					flag = 0;
+					counter = counter + 1;
+					arr2[id - 1] = "O";
+					arr.push(id)
+			}
+			console.log(counter);
+			if(counter >= 5)
+			{
+				if(checkWin() == true)
+				{
+					if(flag == 1)
+						alert("User 1 has won the game\n");
+					if(flag == 0)
+						alert("User 2 has won the game");
+					location.reload();
+				}
+				if(counter == 9 && checkWin() == false)
+				{
+					alert("Game Over\n");
+					startTimer(10 ,document.querySelector('#time'));
+					location.reload();
+				}
+			}
+	}
+
+function startTimer(duration, display) {
+    var timer = duration, minutes, seconds;
+    setInterval(function () {
+        minutes = parseInt(timer / 60, 10)
+        seconds = parseInt(timer % 60, 10);
+
+        minutes = minutes < 10 ? "0" + minutes : minutes;
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+
+        display.textContent = minutes + ":" + seconds;
+
+        if (--timer < 0) {
+            timer = duration;
+            location.reload();
+        }
+    }, 1000);
+}
+
+window.onload = function () {
+    var fiveMinutes = 60 * 5,
+        display = document.querySelector('#time');
+    startTimer(fiveMinutes, display);
+};
+</script>
+	<title>TikTacToe</title>
+	<style type="text/css">
+		#mytable
+		{
+			margin-left: 400px;
+			margin-top: 10px;
+			border:5;
+			width: 400px;
+			height: 400px;
+			table-layout: fixed;
+		}
+		.row{
+				background: grey;
+				text-align: center;
+		}
+		.cell
+		{
+			font-family: Raleway;
+			color: white;
+			font-size: 72;
+		}
+		td:hover{
+			background-color: orange;
+		}
+		#heading{
+			margin-left: 510px;
+			margin-top: 50px;
+			font-family: Raleway;
+			color: grey;
+		}
+		#time
+		{
+			margin-left: 700px;
+			font-family: Raleway;
+			font-size: 28;
+		}
+		#heading #tacspan{
+			color: orange;
+		}
+		input{
+			margin-left: 400px;
+		}
+	</style>
+	
+</head>
+<body>
+
+<h1 id = "heading">Tik-<span id = "tacspan">Tac</span>-Toe</h1>
+<div><span id="time">TIME : 05:00</span></div>
+<table id = "mytable">
+	<tr class = "row">
+		<td onclick = "put_data(this.id)" id = "1" class = "cell"></td>
+		<td onclick = "put_data(this.id)" id = "2"  class = "cell"></td>
+		<td  onclick = "put_data(this.id)" id = "3"  class = "cell"></td>
+	</tr>
+	<tr  class = "row">
+		<td onclick = "put_data(this.id)" id = "4"  class = "cell"></td>
+		<td onclick = "put_data(this.id)" id = "5"  class = "cell"></td>
+		<td onclick = "put_data(this.id)" id = "6"  class = "cell"></td>
+	</tr>
+	<tr  class = "row">
+		<td onclick = "put_data(this.id)" id = "7"  class = "cell"></td>
+		<td onclick = "put_data(this.id)" id = "8"  class = "cell"></td>
+		<td onclick = "put_data(this.id)" id = "9"  class = "cell"></td>
+	</tr>
+</table>
+
+<input type="button" name="undo" value="undo" onclick="undo_data()">
+</body>
+</html>
